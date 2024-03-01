@@ -167,9 +167,8 @@ div.post p.summary{
 }
 
 @media (max-width: 500px){
-
     #menu{
-        position: block;
+        margin-right: 1rem;
         display: flex;
         flex-direction: column;
         padding: 5px 0px 5px;
@@ -188,8 +187,19 @@ div.post p.summary{
 
     header a.logo{
         padding: 0px;
+        margin-right: 0px;
     }
+
     h4, p{
         margin-left: 1.5rem;
+    }
+    main{
+        max-width: 100%;
+    }
+    div.post{
+        margin-left: 1.5rem;
+        max-width: 80%;
+        grid-template-columns: none;
+        grid-template-rows: auto;
     }
 }

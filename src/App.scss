@@ -165,3 +165,31 @@ div.post p.summary{
     margin: 10px 0;
     line-height: 1.4rem;
 }
+
+@media (max-width: 500px){
+
+    #menu{
+        position: block;
+        display: flex;
+        flex-direction: column;
+        padding: 5px 0px 5px;
+        border-radius: var(--border-radius);
+    }
+
+    #menu li:nth-of-type(1){
+        order: 3;
+    }
+    #menu li:nth-of-type(2){
+        order: 1;
+    }
+    #menu li:nth-of-type(3){
+        order: 2;
+    }
+
+    header a.logo{
+        padding: 0px;
+    }
+    h4, p{
+        margin-left: 1.5rem;
+    }
+}

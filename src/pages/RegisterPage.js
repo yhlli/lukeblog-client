@@ -6,6 +6,7 @@ export default function RegisterPage(){
     async function register(ev){
         ev.preventDefault();
         //http://localhost:4000/register
+        //https://lukeblog-api.onrender.com/register
         const response = await fetch('https://lukeblog-api.onrender.com/register', {
             method: 'POST',
             body: JSON.stringify({username,password}),

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 
+//http://localhost:4000
+//https://lukeblog-api.onrender.com
+const address = 'https://lukeblog-api.onrender.com'
+
 export default function LoginPage(){
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
     const [redirect,setRedirect] = useState(false);
     async function login(ev){
         ev.preventDefault();
-        //http://localhost:4000/login
-        //https://lukeblog-api.onrender.com/login
-        const response = await fetch('https://lukeblog-api.onrender.com/login', {
+        const response = await fetch(address+'/login', {
             method: 'POST',
             body: JSON.stringify({username, password}),
             headers: {'Content-Type':'application/json'},

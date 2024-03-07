@@ -9,7 +9,7 @@ export default function Header(){
   const [username,setUsername] = useState(null);
   useEffect(()=>{
     fetch(address+'/profile', {
-      credentials: 'include',
+      withCredentials: true,
     }).then(response =>{
       response.json().then(userInfo=>{
         setUsername(userInfo.username);
@@ -19,7 +19,7 @@ export default function Header(){
 
   function logout(){
     fetch(address+'/logout', {
-      credentials: 'include',
+      withCredentials: true,
       method: 'POST',
     });
     setUsername(null);

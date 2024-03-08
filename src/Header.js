@@ -9,7 +9,7 @@ export default function Header(){
   const [username,setUsername] = useState(null);
   useEffect(()=>{
     fetch(address+'/profile', {
-      withCredentials: true,
+      credentials: "include",
     }).then(response =>{
       response.json().then(userInfo=>{
         setUsername(userInfo.username);

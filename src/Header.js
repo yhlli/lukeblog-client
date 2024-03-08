@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 //http://localhost:4000
 //https://lukeblog-api.onrender.com
 const address = 'https://lukeblog-api.onrender.com'
 
 export default function Header(){
-  const [username,setUsername] = useState(null);
+  const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(()=>{
     fetch(address+'/profile', {
       credentials: "include",
     }).then(response =>{
       response.json().then(userInfo=>{
-        setUsername(userInfo.username);
+        setUserInfo(userInfo);
       });
     });
   }, []);
@@ -22,8 +23,10 @@ export default function Header(){
       withCredentials: true,
       method: 'POST',
     });
-    setUsername(null);
+    setUserInfo(null);
   }
+
+  const username = userInfo?.username;
 
   return(
     <header>

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 //http://localhost:4000
 //https://lukeblog-api.onrender.com
-const address = 'http://localhost:4000'
+const address = 'https://lukeblog-api.onrender.com'
 
 export default function RegisterPage(){
     const [username, setUsername] = useState('');

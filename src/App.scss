@@ -236,6 +236,39 @@ button{
     padding: 7px 0;
 }
 
-form h1{
+form.login h1, form.register h1{
     text-align: center;
+}
+
+.ql-toolbar .ql-stroke {
+    stroke: #fff !important;
+}
+
+.ql-strike svg{
+    stroke: #fff !important;
+}
+
+button:hover .ql-stroke,
+.ql-picker-label:hover .ql-stroke {
+  fill: none;
+  stroke: red !important;
+}
+
+.ql-active .ql-stroke {
+  fill: none;
+  stroke: red !important;
+}
+
+button:hover .ql-fill {
+  fill: red !important;
+  stroke: none;
+}
+
+.ql-active .ql-fill {
+  fill: red !important;
+  stroke: none;
+}
+
+.ql-picker-label{
+    color: #fff !important;
 }

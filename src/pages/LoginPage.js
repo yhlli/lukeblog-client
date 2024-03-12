@@ -1,10 +1,7 @@
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
-
-//http://localhost:4000
-//https://lukeblog-api.onrender.com
-const address = 'https://lukeblog-api.onrender.com'
+import { address } from "../Header";
 
 export default function LoginPage(){
     const [username,setUsername] = useState('');

@@ -1,16 +1,20 @@
-export default function Post(){
+import {formatISO9075} from "date-fns"
+import { address } from "./Header"
+
+export default function Post({title,summary,cover,content,createdAt,author}){
+
     return (
         <div className="post">
         <div className="image">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Test-Logo.svg" alt="" />
+          <img src={address+'/'+cover} alt="" />
         </div>
         <div className="texts">
-          <h2>This is the test title for the post</h2>
+          <h2>{title}</h2>
           <p className="info">
-            <a className="author">Luke</a>
-            <time>2024-02-29 13:33</time>
+            <a className="author">{author.username}</a>
+            <time>{formatISO9075(new Date(createdAt))}</time>
           </p>
-          <p className="summary">This is the content that each post will contain ajogijeraogijeaoigjraerogijea;oaeorigj</p>
+          <p className="summary">{summary}</p>
         </div>
       </div>
     )

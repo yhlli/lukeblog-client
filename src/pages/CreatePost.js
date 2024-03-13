@@ -36,6 +36,7 @@ export default function CreatePost(){
         const response = await fetch(address+'/post', {
             method: 'POST',
             body: data,
+            credentials: 'include',
         });
         if (response.ok) {
             setRedirect(true);

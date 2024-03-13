@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 //http://localhost:4000
 //https://lukeblog-api.onrender.com
-export const address = 'http://localhost:4000'
+export const address = 'https://lukeblog-api.onrender.com'
 
 export default function Header(){
   const {setUserInfo,userInfo} = useContext(UserContext);
@@ -18,8 +18,8 @@ export default function Header(){
     });
   }, []);
 
-  function logout(){
-    fetch(address+'/logout', {
+  async function logout(){
+    const response = await fetch(address+'/logout', {
       withCredentials: true,
       method: 'POST',
     });

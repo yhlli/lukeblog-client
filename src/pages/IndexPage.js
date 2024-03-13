@@ -4,8 +4,8 @@ import { address } from "../Header";
 
 export default function IndexPage(){
     const [posts,setPosts] = useState([]);
-    useEffect(()=>{
-        fetch(address+'/post').then(response=>{
+    useEffect(async ()=>{
+        await fetch(address+'/post').then(response=>{
             response.json().then(posts=>{
                 setPosts(posts);
             });

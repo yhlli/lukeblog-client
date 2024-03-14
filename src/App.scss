@@ -13,10 +13,6 @@ body{
     color: var(--font-color);
 }
 
-img{
-    max-width: 100%;
-}
-
 main{
     padding: 10px;
     max-width: 80%;
@@ -152,6 +148,11 @@ div.post div.texts h2{
     font-size: 1.8rem;
 }
 
+div.post div.texts a{
+    text-decoration: none;
+    color: inherit;
+}
+
 div.post p.info{
     margin: 6px 0;
     color: #aaa;
@@ -170,11 +171,17 @@ div.post p.summary{
     line-height: 1.4rem;
 }
 
+div.post img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
 h4, p{
         margin-left: 1.5rem;
 }
 
-@media (max-width: 500px){
+@media (max-width: 768px){
     #menu{
         margin-right: 1rem;
         display: flex;
@@ -271,4 +278,39 @@ button:hover .ql-fill {
 
 .ql-picker-label{
     color: #fff !important;
+}
+
+div.post-page div.image{
+    //max-height: 300px;
+    display: flex;
+    overflow: hidden;
+}
+
+div.post-page div.image img{
+    width: 100vw;
+    object-fit: cover;
+    object-position: center center;
+}
+
+div.post-page a{
+    text-decoration: underline;
+}
+
+div.post-page h1{
+    text-align: center;
+    margin: 10px 0 5px;
+}
+
+div.post-page time{
+    text-align: center;
+    display: block;
+    font-size: 0.7rem;
+    color:#aaa;
+}
+
+div.post-page div.author{
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 0.7rem;
+    font-weight: bold;
 }

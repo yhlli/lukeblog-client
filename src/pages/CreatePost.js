@@ -63,7 +63,7 @@ export default function CreatePost(){
                 onChange={newValue => setContent(newValue)}
                 modules={modules}
                 formats={formats}/>
-            <button style={{marginTop:'5px'}}>Create Post</button>
+            <button id="createbtn" style={{marginTop:'5px'}}>Create Post</button>
         </form>
     );
 }

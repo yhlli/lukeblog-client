@@ -323,6 +323,8 @@ div.post-page div.author{
 div.edit-row{
     text-align: center;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 div.post-page a.edit-btn{

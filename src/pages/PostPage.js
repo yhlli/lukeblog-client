@@ -61,7 +61,7 @@ export default function PostPage() {
         return <Navigate to={'/'} />
     }
     if (refresh){
-        return document.location.reload(true);
+        return <Navigate to={`/post/${id}`} />
     }
 
     return (

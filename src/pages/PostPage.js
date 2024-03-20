@@ -61,7 +61,7 @@ export default function PostPage() {
         return <Navigate to={'/'} />
     }
     if (refresh){
-        return window.location.reload();
+        return document.location.reload(true);
     }
 
     return (

@@ -341,3 +341,12 @@ div.post-page a.edit-btn{
 a svg{
     height: 20px;
 }
+
+a.cauthor, div.comment time{
+    display: inline;
+    padding-right: 5px;
+}
+
+p.commentContent{
+    margin-left: 50px;
+}

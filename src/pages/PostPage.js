@@ -3,14 +3,16 @@ import { address } from "../Header";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { UserContext } from "../UserContext";
+import Comment from "../Comment";
 
 
 export default function PostPage() {
     const [postInfo,setPostInfo] = useState(null);
     const {userInfo} = useContext(UserContext);
     const [comment,setComment] = useState('');
-    const [cauthor,setCauthor] = useState('');
+    const [comments,setComments] = useState('');
     const [redirect,setRedirect] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     const {id} = useParams();
     useEffect(()=>{    
         fetch(`${address}/post/${id}`)
@@ -20,6 +22,17 @@ export default function PostPage() {
                 });
             });
     }, []);
+    
+
+    useEffect(()=>{
+        fetch(`${address}/comment/${id}`)
+            .then(response => {
+                response.json().then(comments =>{
+                    setComments(comments);
+                })
+            });
+    },[]);
+    
     if (!postInfo) return '';
 
     async function deletePost(ev){
@@ -31,8 +44,24 @@ export default function PostPage() {
         if (response.ok) setRedirect(true);
     }
 
+    async function addComment(ev){
+        ev.preventDefault();
+        const data = new FormData();
+        data.set('comment', comment);
+        data.set('postId', id);
+        const response = await fetch(`${address}/comment/${id}`, {
+            method: 'POST',
+            body: data,
+            credentials: 'include',
+        });
+        if (response.ok) setRefresh(true);
+    }
+
     if (redirect){
         return <Navigate to={'/'} />
+    }
+    if (refresh){
+        return window.location.reload();
     }
 
     return (
@@ -71,13 +100,17 @@ export default function PostPage() {
             </div>
             <div dangerouslySetInnerHTML={{__html:postInfo.content}} />
             
+            {comments.length > 0 && comments.map(comment => (
+                <Comment {...comment} />
+            ))}
             {userInfo !== null && (
-                <div className="edit-row">
-                    <Link className="edit-btn" to={`/comment/${postInfo._id}`}>
-
-                        Add Comment
-                    </Link>
-                </div>
+                <form onSubmit={addComment}>
+                    <input type="text" 
+                        placeholder="Comment"
+                        value={comment}
+                        onChange={ev => setComment(ev.target.value)} />
+                    <button id="createbtn" style={{marginTop:'5px'}}>Add Comment</button>
+                </form>
             )}
         </div>
     );

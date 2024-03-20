@@ -13,7 +13,6 @@ export default function IndexPage(){
                         postItem.cover = 'uploads\\default.jpg';
                     }
                 })
-                console.log(posts);
                 setPosts(posts);
             });
         });

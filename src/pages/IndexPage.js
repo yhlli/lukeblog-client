@@ -11,12 +11,13 @@ export default function IndexPage(){
                     var co = postItem.cover;
                     if (String(co).indexOf('/') > -1){
                         postItem.cover = 'uploads\\default.jpg';
-                    }
+                    } 
                 })
                 setPosts(posts);
             });
         });
     },[]);
+
     return(
         <>
             {posts.length > 0 && posts.map(post => (

@@ -12,7 +12,6 @@ export default function PostPage() {
     const [comment,setComment] = useState('');
     const [comments,setComments] = useState('');
     const [redirect,setRedirect] = useState(false);
-    const [refresh, setRefresh] = useState(false);
     const {id} = useParams();
     useEffect(()=>{    
         fetch(`${address}/post/${id}`)
@@ -51,18 +50,17 @@ export default function PostPage() {
             body: data,
             credentials: 'include',
         });
-        if (response.ok) setRefresh(true);
+        if (response.ok){
+            const newComment = await response.json();
+            setComments([...comments, newComment]);
+            setComment('');
+        }
     }
 
     if (redirect){
         return <Navigate to={'/'} />
     }
-    if (refresh){
-        window.location.reload()
-    }
-
     
-
     if (!postInfo) return '';
 
     return (

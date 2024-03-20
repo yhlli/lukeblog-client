@@ -23,7 +23,6 @@ export default function PostPage() {
             });
     }, []);
     
-
     useEffect(()=>{
         fetch(`${address}/comment/${id}`)
             .then(response => {
@@ -32,8 +31,6 @@ export default function PostPage() {
                 })
             });
     },[]);
-    
-    if (!postInfo) return '';
 
     async function deletePost(ev){
         ev.preventDefault();
@@ -61,22 +58,18 @@ export default function PostPage() {
         return <Navigate to={'/'} />
     }
     if (refresh){
-        return <Navigate to={`/post/${id}`} />
+        window.location.reload()
     }
+
+    
+
+    if (!postInfo) return '';
 
     return (
         <div className="post-page">
             <h1>{postInfo.title}</h1>
             <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
             <div className="author">by {postInfo.author.username}</div>
-            {/* {userInfo !== null && userInfo.id === postInfo.author._id && (
-                <div className="edit-row">
-                    <Link className="edit-btn" to={`/delete/${postInfo._id}`}>
-
-                        Delete Post
-                    </Link>
-                </div>
-            )} */}
             {userInfo !== null && userInfo.id === postInfo.author._id && (
                 <div className="edit-row">
                     <Link className="edit-btn" to={`/edit/${postInfo._id}`}>

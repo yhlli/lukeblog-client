@@ -343,9 +343,27 @@ a svg{
     height: 20px;
 }
 
+div.comment{
+    display: flex;
+    justify-content: space-between;
+}
+
 a.cauthor, div.comment time{
-    display: inline;
+    display: inline-block;
     padding-right: 5px;
+}
+
+a.deletecomment{
+    background-color: #333;
+    margin-top: 40px;
+    max-height: 30px;
+    max-width: 30px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+a.deletecomment svg{
+    color: white;
 }
 
 p.commentContent{

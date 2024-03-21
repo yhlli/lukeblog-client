@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
@@ -23,10 +23,8 @@ export default function Header(){
       credentials: 'include',
       method: 'POST',
     });
-    setUserInfo(null);
+    setUserInfo('not logged in');
   }
-
-  const username = userInfo?.username;
 
   return(
     <header>
@@ -41,13 +39,13 @@ export default function Header(){
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </li>
-          {username && (
+          {userInfo !== 'not logged in' && (
             <>
               <li><Link to="/create">Create Post</Link></li>
               <li><Link onClick={logout}>Logout</Link></li>
             </>
           )}
-          {!username && (
+          {userInfo === 'not logged in' && (
             <>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>

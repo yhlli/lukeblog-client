@@ -7,12 +7,6 @@ export default function IndexPage(){
     useEffect(()=>{
         fetch(address+'/post').then(response=>{
             response.json().then(posts=>{
-                posts.forEach(function (postItem){
-                    var co = postItem.cover;
-                    if (String(co).indexOf('/') > -1){
-                        postItem.cover = 'uploads\\default.jpg';
-                    } 
-                })
                 setPosts(posts);
             });
         });

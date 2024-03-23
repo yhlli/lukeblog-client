@@ -42,6 +42,7 @@ export default function Header(){
           {userInfo !== 'not logged in' && (
             <>
               <li><Link to="/create">Create Post</Link></li>
+              <li><Link to={`/user/${userInfo.username}`}>My Profile</Link></li>
               <li><Link onClick={logout}>Logout</Link></li>
             </>
           )}

@@ -76,7 +76,8 @@ export default function PostPage() {
         <div className="post-page">
             <h1>{postInfo.title}</h1>
             <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
-            <div className="author">by {postInfo.author.username}</div>
+            <Link to={`/user/${author.username}`} className="author">{author.username}</Link>
+            {/* <div className="author">by {postInfo.author.username}</div> */}
             {userInfo !== 'not logged in' && userInfo.id === postInfo.author._id && (
                 <div className="edit-row">
                     <Link className="edit-btn" to={`/edit/${postInfo._id}`}>

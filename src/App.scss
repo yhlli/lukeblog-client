@@ -351,6 +351,10 @@ div.post-page a.edit-btn{
     text-decoration: none;
 }
 
+div.post-page a.edit-btn:hover{
+    background-color: #555;
+}
+
 a svg{
     height: 20px;
 }
@@ -380,4 +384,29 @@ a.deletecomment svg{
 
 p.commentContent{
     margin-left: 50px;
+}
+
+div.profile a.edit-btn{
+    background-color: #333;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+div.profile a.edit-btn:hover{
+    background-color: #555;
+}
+
+div.profile{
+    display: block;
+    justify-content: space-between;
+    text-align: center;
+}
+
+div.bio p{
+    margin-left: 0;
 }

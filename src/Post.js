@@ -2,7 +2,7 @@ import {formatISO9075} from "date-fns"
 import { address } from "./Header"
 import { Link } from "react-router-dom"
 
-export default function Post({_id,title,summary,cover,content,createdAt,author}){
+export default function Post({_id,title,summary,cover,content,createdAt,author,uname}){
 
     return (
       <div className="post">

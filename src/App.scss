@@ -27,6 +27,7 @@ header{
     top: 0%;
     background-color: var(--background-color);
     padding: 0.5rem;
+    border-bottom: 1px solid white;
 }
 
 header a{
@@ -144,7 +145,7 @@ div.post{
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
     gap: 20px;
-    margin-bottom: 30px;
+    margin: 30px;
 }
 
 div.post div.texts h2{
@@ -307,7 +308,7 @@ div.post-page div.image img{
 }
 
 div.post-page a{
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 div.post-page h1{
@@ -362,6 +363,15 @@ a svg{
 div.comment{
     display: flex;
     justify-content: space-between;
+}
+
+a.cauthor{
+    color: white;
+    font-weight: bold;
+}
+
+a.cauthor:hover{
+    color: #777;
 }
 
 a.cauthor, div.comment time{

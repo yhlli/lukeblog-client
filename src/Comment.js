@@ -10,7 +10,7 @@ export default function Comment({_id,author,content,createdAt, deleteComment}){
         <div className="comment">
             <div className="commentbar">
                 <p className="commentinfo">
-                    <a className="cauthor">{author.username}</a>
+                    <Link to={`/user/${author.username}`} className="cauthor">{author.username}</Link>
                     <time>{formatISO9075(new Date(createdAt))}</time>
                 </p>
                 <p className="commentContent">{content}</p>

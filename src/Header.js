@@ -14,6 +14,7 @@ export default function Header(){
     }).then(response =>{
       response.json().then(userInfo=>{
         setUserInfo(userInfo);
+        if (userInfo.username == undefined) logout();
       });
     });
   }, []);

@@ -77,7 +77,7 @@ export default function PostPage() {
             <h1>{postInfo.title}</h1>
             <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
             <div className="author">
-                <p>by </p>
+                <p className="by">by </p>
                 <Link to={`/user/${postInfo.author.username}`} className="author">{postInfo.author.username}</Link>
             </div>
             
@@ -104,7 +104,10 @@ export default function PostPage() {
                 <img src={`${address}/${postInfo.cover}`} alt="" />
             </div>
             <div dangerouslySetInnerHTML={{__html:postInfo.content}} />
-            
+            {comments.length > 0 && (
+                <p style={{textAlign: "center", marginTop: "50px", marginLeft: "0px", border: "1px solid white",}}>Comments</p>
+            )}
+
             {comments.length > 0 && comments.map(comment => (
                 <div className="commentbar">
                     <Comment {...comment} key={comment._id} deleteComment={deleteComment} />
@@ -112,7 +115,7 @@ export default function PostPage() {
             ))}
 
             {userInfo !== 'not logged in' && (
-                <form onSubmit={addComment}>
+                <form className="commentForm" onSubmit={addComment}>
                     <input type="text" 
                         placeholder="Comment"
                         value={comment}

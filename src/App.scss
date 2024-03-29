@@ -431,11 +431,43 @@ div.author{
 
 div.author a{
     text-decoration: none;
-    color: #dbdbdb;
+    color: white;
     margin-top: 6px;
     font-size: 1rem;
 }
 
 div.author a:hover{
     color: #444;
+}
+
+p.by{
+    margin-left: 0px;
+}
+
+form.commentForm{
+    margin: 50px 0 50px;
+}
+
+div.pagination{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+div.pagination a{
+    padding: 0 7px 2px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    background-color: #555;
+}
+
+div.pagination a:hover{
+    background-color: #888;
+}
+
+div.pagination div{
+    padding: 0 7px 2px;
 }

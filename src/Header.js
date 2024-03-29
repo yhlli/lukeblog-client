@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 //http://localhost:4000
@@ -12,11 +12,9 @@ export default function Header(){
     fetch(address+'/profile', {
       credentials: 'include',
     }).then(response =>{
-      if (userInfo.username == undefined) logout();
-      if (response.statusCode == 401) logout();
+      if (userInfo.username == undefined || response.statusCode == 401) logout();
       response.json().then(userInfo=>{
         setUserInfo(userInfo);
-        
       });
     });
   }, []);

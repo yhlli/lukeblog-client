@@ -471,3 +471,10 @@ div.pagination a:hover{
 div.pagination div{
     padding: 0 7px 2px;
 }
+
+.loadingCircle {
+  position: fixed; /* Ensures the circle stays in place when scrolling */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Positions the center at 50% of viewport */
+}

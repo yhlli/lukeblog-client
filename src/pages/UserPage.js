@@ -29,7 +29,7 @@ export default function UserPage(){
         <>
             <div className="profile">
                 <h1>{id}</h1>
-                {aboutMe !== null && (
+                {aboutMe != null || aboutMe != undefined && (
                     <div className="bio" dangerouslySetInnerHTML={{__html:aboutMe[0].content}} />
                 )}
                 { userInfo !== 'not logged in' && userInfo.username === id && (

@@ -20,7 +20,7 @@ export default function Header(){
         });
       }
     });
-  }, []);
+  }, [userInfo]);
 
   async function logout(){
     fetch(address+'/logout', {

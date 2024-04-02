@@ -13,10 +13,13 @@ export default function Header(){
       credentials: 'include',
     }).then(response =>{
       if (userInfo.username == undefined) logout();
-      if (response.statusCode == 401) logout();
-      response.json().then(userInfo=>{
-        setUserInfo(userInfo);
-      });
+      if (response.status == 401){
+        logout();
+      } else{
+        response.json().then(userInfo=>{
+          setUserInfo(userInfo);
+        });
+      }
     });
   }, []);
 
@@ -25,7 +28,7 @@ export default function Header(){
       credentials: 'include',
       method: 'POST',
     });
-    setUserInfo('not logged in');
+    setUserInfo(null);
   }
 
   return(
@@ -41,14 +44,14 @@ export default function Header(){
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </li>
-          {userInfo !== 'not logged in' && (
+          {userInfo !== null && (
             <>
               <li><Link to="/create">Create Post</Link></li>
               <li><Link to={`/user/${userInfo.username}`}>My Profile</Link></li>
               <li><Link onClick={logout}>Logout</Link></li>
             </>
           )}
-          {userInfo === 'not logged in' && (
+          {userInfo === null && (
             <>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>

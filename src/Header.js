@@ -12,7 +12,7 @@ export default function Header(){
     fetch(address+'/profile', {
       credentials: 'include',
     }).then(response =>{
-      if (response.status == 401 || userInfo.username == undefined){
+      if (response.status == 401){
         logout();
       } else{
         response.json().then(userInfo=>{

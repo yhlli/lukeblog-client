@@ -11,15 +11,24 @@ export default function IndexPage(){
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
+    //1:date desc, 2:date asc, 3:views desc, 4:views asc
+    const [sortBy, setsortBy] = useState(1);
+    const sortCriteria = {
+        1: "Date descending",
+        2: "Date ascending",
+        3: "Views descending",
+        4: "Views ascending",
+    };
+
     useEffect(()=>{
-        fetch(address+'/post?page='+currentPage).then(response=>{
+        fetch(address+'/post?page='+currentPage+'&sort='+sortBy).then(response=>{
             response.json().then(posts=>{
                 setPosts(posts.data);
                 setTotalPages(Math.ceil(posts.totalCount/20));
             });
             setIsLoading(false);
         });
-    },[currentPage]);
+    },[currentPage,sortBy]);
 
     function firstPage(){
         setCurrentPage(1);
@@ -41,6 +50,18 @@ export default function IndexPage(){
         <>
             {isLoading ? <Loading /> : (
                 <>
+                <div id="sortdiv">
+                    <li className="sort"><Link>Sort By</Link>
+                        <ul>
+                            <li><Link onClick={()=>setsortBy(1)}>Date desc.</Link></li>
+                            <li><Link onClick={()=>setsortBy(2)}>Date asc.</Link></li>
+                            <li><Link onClick={()=>setsortBy(3)}>Views desc.</Link></li>
+                            <li><Link onClick={()=>setsortBy(4)}>Views asc.</Link></li>
+                        </ul>
+                    </li>
+                    <p>{sortCriteria[sortBy]}</p>
+                </div>
+                
                 {posts.length > 0 && posts.map(post => (
                     <Post {...post} />
                 ))}

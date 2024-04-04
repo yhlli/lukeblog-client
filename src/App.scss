@@ -28,6 +28,7 @@ header{
     background-color: var(--background-color);
     padding: 0.5rem;
     border-bottom: 1px solid white;
+    z-index: 10;
 }
 
 header a{
@@ -325,7 +326,7 @@ div.post-page time{
 
 div.post-page div.author{
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     font-size: 0.7rem;
     font-weight: bold;
 }
@@ -477,4 +478,62 @@ div.pagination div{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* Positions the center at 50% of viewport */
+}
+
+.eye{
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+}
+
+p.view{
+    margin-top: 0px;
+    text-align: center;
+}
+
+.sort {
+    z-index: 1;
+    position: relative; /* Make the "Sort By" element the positioning container */
+    display: inline-block; /* Allow text and dropdown to appear inline */
+    background-color: grey;
+    
+  
+    &:hover > ul { /* Target the nested ul on hover of the sort element */
+      display: block; /* Show the dropdown menu */
+    }
+  
+    ul {
+      position: absolute; /* Position the dropdown menu absolutely */
+      top: 100%; /* Place it below the sort element */
+      left: 0; /* Align it to the left edge */
+      list-style: none; /* Remove default list styling */
+      padding: 0; /* Remove default padding */
+      margin: 0; /* Remove default margin */
+      background-color: grey; /* Set background color (adjust as needed) */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+      display: none;
+      width: 6.5rem;
+    }
+
+    a { /* Style the links within the dropdown */
+      display: block; /* Make them fill the width of the list item */
+      padding: 10px; /* Add some padding */
+      text-decoration: none; /* Remove underline */
+      color: white; /* Set text color (adjust as needed) */
+      transition: color 0.2s ease-in-out; /* Add hover effect */
+
+      &:hover { /* Change color on hover */
+        color: darkgrey; /* Adjust hover color as needed */
+        background-color: lightgrey;
+      }
+    }
+}
+
+#sortdiv{
+    display: flex;
+    max-height: 40px;
+    p{
+        margin-top: 10px;
+        margin-left: 10px;
+    }
 }

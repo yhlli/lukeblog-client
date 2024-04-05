@@ -14,17 +14,26 @@ export default function UserPage(){
     var [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+
+    //1:date desc, 2:date asc, 3:views desc, 4:views asc
+    const [sortBy, setsortBy] = useState(1);
+    const sortCriteria = {
+        1: "Date descending",
+        2: "Date ascending",
+        3: "Views descending",
+        4: "Views ascending",
+    };
+
     useEffect(()=>{
         fetch(`${address}/user/${id}`)
             .then(response=>{
                 response.json().then(aboutMe => {
                     setaboutMe(aboutMe);
-                    console.log(aboutMe);
                 });
             });
     },[]);
     useEffect(()=>{
-        fetch(`${address}/user/post/${id}?page=${currentPage}`)
+        fetch(`${address}/user/post/${id}?page=${currentPage}&sort=${sortBy}`)
             .then(response=>{
                 response.json().then(posts =>{
                     setPosts(posts.data);
@@ -32,7 +41,7 @@ export default function UserPage(){
                 });
                 setIsLoading(false);
             });
-    },[currentPage]);
+    },[currentPage,sortBy]);
 
     function firstPage(){
         setCurrentPage(1);
@@ -54,6 +63,17 @@ export default function UserPage(){
         <>
             {isLoading ? <Loading /> : (
                 <>
+                    <div id="sortdiv">
+                        <li className="sort"><Link>Sort By</Link>
+                            <ul>
+                                <li><Link onClick={()=>setsortBy(1)}>Date desc.</Link></li>
+                                <li><Link onClick={()=>setsortBy(2)}>Date asc.</Link></li>
+                                <li><Link onClick={()=>setsortBy(3)}>Views desc.</Link></li>
+                                <li><Link onClick={()=>setsortBy(4)}>Views asc.</Link></li>
+                            </ul>
+                        </li>
+                        <p>{sortCriteria[sortBy]}</p>
+                    </div>
                     <div className="profile">
                         <h1>{id}</h1>
                         {(aboutMe !== null || aboutMe !== undefined) && (

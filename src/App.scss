@@ -537,3 +537,28 @@ p.view{
         margin-left: 10px;
     }
 }
+
+.fav{
+    text-decoration: none;
+    color: inherit;
+    justify-content: space-between;
+    background-color: grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    max-width: 70px;
+}
+
+#sortheader{
+    display: flex;
+    justify-content: space-between;
+}
+
+.fav:hover{
+    background-color: lightgrey;
+}
+
+.fav.clicked {
+    background-color: darkorange;
+}

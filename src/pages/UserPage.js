@@ -14,6 +14,7 @@ export default function UserPage(){
     var [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const [isOn, setIsOn] = useState(false);
 
     //1:date desc, 2:date asc, 3:views desc, 4:views asc
     const [sortBy, setsortBy] = useState(1);
@@ -33,7 +34,7 @@ export default function UserPage(){
             });
     },[]);
     useEffect(()=>{
-        fetch(`${address}/user/post/${id}?page=${currentPage}&sort=${sortBy}`)
+        fetch(`${address}/user/post/${id}?page=${currentPage}&sort=${sortBy}&fav=${isOn}`)
             .then(response=>{
                 response.json().then(posts =>{
                     setPosts(posts.data);
@@ -41,7 +42,7 @@ export default function UserPage(){
                 });
                 setIsLoading(false);
             });
-    },[currentPage,sortBy]);
+    },[currentPage,sortBy,isOn]);
 
     function firstPage(){
         setCurrentPage(1);
@@ -59,20 +60,37 @@ export default function UserPage(){
         setCurrentPage(currentPage - 1);
     }
 
+    function ToggleButton(){
+        const handleClick = ()=>{
+            setIsOn(!isOn);
+        };
+        return(
+            <button onClick={handleClick} className={`fav ${isOn ? 'clicked' : ''}`}>
+                {isOn ? 'Favorites' : 'Favorites'}
+            </button>
+        )
+    }
+
     return (
         <>
             {isLoading ? <Loading /> : (
                 <>
-                    <div id="sortdiv">
-                        <li className="sort"><Link>Sort By</Link>
-                            <ul>
-                                <li><Link onClick={()=>setsortBy(1)}>Date desc.</Link></li>
-                                <li><Link onClick={()=>setsortBy(2)}>Date asc.</Link></li>
-                                <li><Link onClick={()=>setsortBy(3)}>Views desc.</Link></li>
-                                <li><Link onClick={()=>setsortBy(4)}>Views asc.</Link></li>
-                            </ul>
-                        </li>
-                        <p>{sortCriteria[sortBy]}</p>
+                    <div id="sortheader">
+                        <div id="sortdiv">
+                            <li className="sort"><Link>Sort By</Link>
+                                <ul>
+                                    <li><Link onClick={()=>setsortBy(1)}>Date desc.</Link></li>
+                                    <li><Link onClick={()=>setsortBy(2)}>Date asc.</Link></li>
+                                    <li><Link onClick={()=>setsortBy(3)}>Views desc.</Link></li>
+                                    <li><Link onClick={()=>setsortBy(4)}>Views asc.</Link></li>
+                                </ul>
+                            </li>
+                            <p>{sortCriteria[sortBy]}</p>
+                            
+                        </div>
+                        {userInfo !== null && userInfo.username === id && (
+                            <ToggleButton />
+                        )}
                     </div>
                     <div className="profile">
                         <h1>{id}</h1>

@@ -39,14 +39,16 @@ export default function Header(){
 
   const fetchLocations = async ()=>{
     try {
-      const response = await fetch(address+'/location-from-ip?ip='+vIp);
-      if (!response.ok){
-        throw new Error('Error fetching location');
+      if (vIp){
+        const response = await fetch(address+'/location-from-ip?ip='+vIp);
+        if (!response.ok){
+          throw new Error('Error fetching location');
+        }
+        const loc = await response.json();
+        setCity(loc.city);
+        setRegion(loc.region_code);
+        setCountry(loc.country_code);
       }
-      const loc = await response.json();
-      setCity(loc.city);
-      setRegion(loc.region_code);
-      setCountry(loc.country_code);
     } catch (error) {
       console.log(error);
     }

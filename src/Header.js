@@ -12,8 +12,9 @@ export default function Header(){
   const [region, setRegion] = useState('');
   const [country, setCountry] = useState('');
   const [vIp, setVIp] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(()=>{
-    fetch(address+'/profile', {
+    const fetchData = async () => await fetch(address+'/profile', {
       credentials: 'include',
     }).then(response =>{
       if (response.status == 401){
@@ -26,14 +27,18 @@ export default function Header(){
         });
       }
     });
+    const fetchip = async () => await fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(res => setVIp(res.ip));
+
+    fetchData();
+    fetchip();
     fetchLocations();
-  }, []);
+    setIsLoading(false);
+  }, [vIp]);
 
   const fetchLocations = async ()=>{
     try {
-      const visitorIp = await fetch('https://ipapi.co/json/')
-      .then(res => res.json())
-      console.log(vIp + 'this is the tesstsst');
       const response = await fetch(address+'/location-from-ip?ip='+vIp);
       if (!response.ok){
         throw new Error('Error fetching location');

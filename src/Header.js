@@ -8,6 +8,9 @@ export const address = 'https://lukeblog-api.onrender.com'
 
 export default function Header(){
   const {setUserInfo,userInfo} = useContext(UserContext);
+  const [city, setCity] = useState('');
+  const [region, setRegion] = useState('');
+  const [country, setCountry] = useState('');
   useEffect(()=>{
     fetch(address+'/profile', {
       credentials: 'include',
@@ -22,7 +25,23 @@ export default function Header(){
         });
       }
     });
+    fetchLocations();
   }, []);
+
+  const fetchLocations = async ()=>{
+    try {
+      const response = await fetch(address+'/location-from-ip');
+      if (!response.ok){
+        throw new Error('Error fetching location');
+      }
+      const loc = await response.json();
+      setCity(loc.city);
+      setRegion(loc.region_code);
+      setCountry(loc.country_code);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function logout(){
     fetch(address+'/logout', {
@@ -35,6 +54,7 @@ export default function Header(){
   return(
     <header>
       <Link to="/" className="logo">Luke's Blog</Link>
+        <Link to="/weather" className="location">{city}, {region} {country}</Link>
       <nav>
         <ul id="menu">
           <li><Link to="/about">About</Link>

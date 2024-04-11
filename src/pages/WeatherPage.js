@@ -20,7 +20,16 @@ export default function WeatherPage(){
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                await fetchLocations();
+                await fetch('https://ipapi.co/json/')
+                    .then(res => res.json())
+                    .then(res => {
+                        setCity(res.city)
+                        setRegion(res.region_code)
+                        setCountry(res.country_code)
+                        setLatitude(res.latitude)
+                        setLongitude(res.longitude)
+                });
+                //await fetchLocations();
                 if (latitude && longitude){
                     const response = await fetch(`${address}/weather?lat=${latitude}&lon=${longitude}`);
                     const weatherData = await response.json();
@@ -46,7 +55,7 @@ export default function WeatherPage(){
         
     },[isLoading]);
 
-    const fetchLocations = async ()=>{
+    /* const fetchLocations = async ()=>{
         try {
           const response = await fetch(address+'/location-from-ip');
           if (!response.ok){
@@ -61,7 +70,7 @@ export default function WeatherPage(){
         } catch (error) {
           console.log(error);
         }
-    }
+    } */
 
     return(
         <>

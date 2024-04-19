@@ -14,6 +14,7 @@ import EditPost from './pages/EditPost';
 import UserPage from './pages/UserPage';
 import EditBio from './pages/EditBio';
 import WeatherPage from './pages/WeatherPage';
+import BlackJack from './pages/BlackJackPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path='/user/:id' element={<UserPage />} />
           <Route path='/user/editbio/:id' element={<EditBio />} />
           <Route path={'/weather'} element={<WeatherPage />} />
+          <Route path={'/blackjack'} element={<BlackJack />} />
         </Route>
       </Routes>
     </UserContextProvider>

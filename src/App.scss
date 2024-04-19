@@ -69,7 +69,7 @@ header a.logo:hover{
 
 /*Fade in animation for dropdown*/
 
-@for $i from 1 through 4 {
+@for $i from 1 through 5 {
     #menu li:nth-of-type(1):hover li:nth-of-type(#{$i}){
         animation: fadeIn ($i/2)+0.5s;
     }
@@ -123,7 +123,7 @@ header a.logo:hover{
     border-top-right-radius: var(--border-radius);
 }
 
-#menu ul li:nth-of-type(4){
+#menu ul li:nth-of-type(5){
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
 }
@@ -474,10 +474,10 @@ div.pagination div{
 }
 
 .loadingCircle {
-  position: fixed; /* Ensures the circle stays in place when scrolling */
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Positions the center at 50% of viewport */
+  transform: translate(-50%, -50%);
 }
 
 .eye{
@@ -493,37 +493,37 @@ p.view{
 
 .sort {
     z-index: 1;
-    position: relative; /* Make the "Sort By" element the positioning container */
-    display: inline-block; /* Allow text and dropdown to appear inline */
+    position: relative;
+    display: inline-block;
     background-color: grey;
     
   
-    &:hover > ul { /* Target the nested ul on hover of the sort element */
-      display: block; /* Show the dropdown menu */
+    &:hover > ul {
+      display: block;
     }
   
     ul {
-      position: absolute; /* Position the dropdown menu absolutely */
-      top: 100%; /* Place it below the sort element */
-      left: 0; /* Align it to the left edge */
-      list-style: none; /* Remove default list styling */
-      padding: 0; /* Remove default padding */
-      margin: 0; /* Remove default margin */
-      background-color: grey; /* Set background color (adjust as needed) */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+      position: absolute;
+      top: 100%;
+      left: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background-color: grey;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       display: none;
       width: 6.5rem;
     }
 
-    a { /* Style the links within the dropdown */
-      display: block; /* Make them fill the width of the list item */
-      padding: 10px; /* Add some padding */
-      text-decoration: none; /* Remove underline */
-      color: white; /* Set text color (adjust as needed) */
-      transition: color 0.2s ease-in-out; /* Add hover effect */
+    a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: white;
+      transition: color 0.2s ease-in-out;
 
-      &:hover { /* Change color on hover */
-        color: darkgrey; /* Adjust hover color as needed */
+      &:hover {
+        color: darkgrey;
         background-color: lightgrey;
       }
     }
@@ -566,4 +566,8 @@ p.view{
 a.location{
     justify-content: center;
     align-items: center;
+}
+
+img.card{
+    max-width: 9rem;
 }

@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import Loading from "../Loading";
 
 export default function BlackJack(){
     const [startGame, setStartGame] = useState(false);
     const [money, setMoney] = useState(1500);
     const [deck, setDeck] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
     const [dealerDeck, setDealerDeck] = useState([]);
     const [myDeck, setMyDeck] = useState([]);
     const [fetchedDeck, setFetchedDeck] = useState(false);
@@ -26,11 +24,12 @@ export default function BlackJack(){
     const [showAlert, setShowAlert] = useState(false);
     const [doneStanding, setDoneStanding] = useState(false);
     const [tie, setTie] = useState(false);
+    const [roundCount, setRoundCount] = useState(0);
+    const [isShuffling, setIsShuffling] = useState(false);
 
     useEffect(()=>{
         if (startGame){
             start();
-            setIsLoading(false);
         }
     },[startGame,fetchedDeck]);
 
@@ -40,6 +39,12 @@ export default function BlackJack(){
             checkBust();
         }
     }, [myDeck]);
+
+    useEffect(()=>{
+        if (dealerDeck.length>=2){
+            checkDealerBust();
+        }
+    }, [dealerDeck]);
 
     useEffect(()=>{
         if (win){
@@ -72,7 +77,7 @@ export default function BlackJack(){
                 setTie(true);
             }
         }
-    }, [doneStanding])
+    }, [doneStanding]) //doneStanding
 
     const start = async ()=>{
         const response = await fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6`);
@@ -102,78 +107,98 @@ export default function BlackJack(){
         let isBust = false;
         while (!isBust && dealerScore < 17){
             const newCard = await deal();
-            if (newCard.cards){
-                setDealerDeck((prevDeck) => [...prevDeck, newCard.cards[0]]);
-                const cardValue = calculateCardValue(newCard.cards[0].value);
-                addDealerAces();
-                isBust = dealerScore + cardValue >= 17 && !checkDealerAces();
-                setDealerScore(score => score + cardValue);
-                console.log(dealerScore)
-                if (dealerScore >= 17) break;
+            setDealerDeck((prevDeck) => [...prevDeck, newCard.cards[0]]);
+            const cardValue = calculateCardValue(newCard.cards[0].value);
+            setDealerScore(score => score + cardValue);
+            addDealerAces();
+            isBust = dealerScore + cardValue >= 17 && !checkDealerAces();
+            if (dealerScore >= 17){
+                break;
+            }
+            if (!isBust){
+                break;
             }
         }
         setDoneStanding(true);
     }
 
     const checkBust = ()=>{
+        addAces();
         if (playerScore > 21 && !checkAces()){
             setLost(true);
             setRoundOver(true);
         }
     }
 
+    const checkDealerBust = ()=>{
+        addDealerAces();
+        if (dealerScore > 21){
+            if (!checkDealerAces()){
+                setRoundOver(true);
+            }
+        } else if (doneStanding){
+            setDoneStanding(false);
+            stand();
+        }
+    }
+
     const checkAces = ()=>{
-        for (let i=myDeck.length-1; i>=0; i--){
-            if (aceArray[i]===1 && playerScore > 21){
-                aceArray[i]=-1;
-                setPlayerScore(score => score -10);
-                return true;
+        if (playerScore > 21){
+            for (let i=0; i<myDeck.length; i++){
+                if (aceArray[i]===1){
+                    aceArray[i]=-1;
+                    setPlayerScore(score => score -10);
+                    return true;
+                }
             }
         }
         return false;
     }
 
     const checkDealerAces = ()=>{
-        for (let i=dealerDeck.length-1; i>=0; i--){
-            if (dealerAceArray[i]===1 && dealerScore > 21){
-                dealerAceArray[i]=-1;
-                setDealerScore(score => score -10);
-                break;
-            }
-        }
-    }
-
-    const addAces = ()=>{
-        for (let i= 0; i<myDeck.length; i++){
-            if (myDeck[i].value === 'ACE'){
-                if (aceArray[i]=== 0){
-                    aceArray[i] = 1;
+        if (dealerScore > 21){
+            for (let i=0; i<dealerDeck.length; i++){
+                if (dealerAceArray[i]===1){
+                    dealerAceArray[i]=-1;
+                    setDealerScore(score => score -10);
+                    return true;
                 }
             }
         }
+        return false;
+    }
+
+    const addAces = ()=>{
+        myDeck.forEach((card, index)=>{
+            if (card.value === 'ACE'){
+                if (aceArray[index] === 0){
+                    aceArray[index]= 1;
+                }
+            }
+        })
     }
 
     const addDealerAces = ()=>{
-        for (let i= 0; i<dealerDeck.length; i++){
-            if (dealerDeck[i].value === 'ACE'){
-                if (dealerAceArray[i]!== -1)
-                dealerAceArray[i] = 1;
+        dealerDeck.forEach((card, index)=>{
+            if (card.value === 'ACE'){
+                if (dealerAceArray[index]===0){
+                    dealerAceArray[index]= 1;
+                }
             }
-        }
+        })
     }
 
     const dealerStart = async ()=>{
         if (!deck) return;
         const cards = await deal(2);
-        if (cards.cards){
-            setDealerDeck(cards.cards);
-            var cardValue = 0;
-            cards.cards.forEach(card => {
-                cardValue = cardValue + calculateCardValue(card.value);
-            });
-            setDealerScore(cardValue);
-            addAces();
-        }
+        setDealerDeck(cards.cards);
+        var cardValue = 0;
+        cards.cards.forEach(card => {
+            cardValue = cardValue + calculateCardValue(card.value);
+        });
+        setDealerScore(cardValue);
+        addDealerAces();
+        checkDealerAces();
     }
 
     const playerStart = async ()=>{
@@ -185,6 +210,8 @@ export default function BlackJack(){
             cardValue = cardValue + calculateCardValue(card.value);
         });
         setPlayerScore(cardValue);
+        addAces();
+        checkAces();
     }
 
     const calculateCardValue = (cardValue) => {
@@ -216,7 +243,18 @@ export default function BlackJack(){
         }
     }
 
-    function placeOtherBet(value){
+    async function placeOtherBet(value){
+        if (money === 0){
+            alert('No money left');
+            setMoney(1500);
+        }
+        setRoundCount(count => count + 1);
+        if (roundCount%7===0){
+            setIsShuffling(true);
+            await fetch(`https://www.deckofcardsapi.com/api/deck/${deck.deck_id}/return/`);
+            await fetch(`https://www.deckofcardsapi.com/api/deck/${deck.deck_id}/shuffle/`);
+            setIsShuffling(false);
+        }
         if (win){
             setMoney(money+ 2*bet);
         }
@@ -233,7 +271,7 @@ export default function BlackJack(){
         setShowAlert(false);
         setDoneStanding(false);
         setTie(false);
-        if (value < money && value > 0){
+        if (value <= money && value > 0){
             setMoney(money-value);
             setBet(value);
             dealerStart();
@@ -245,7 +283,7 @@ export default function BlackJack(){
     return(
         <>
             <div>
-                {startGame && (
+                {startGame ? (
                     <>
                         <h1>Your balance: {money}</h1>
                         <h2>Your bet: {bet}</h2>
@@ -302,7 +340,7 @@ export default function BlackJack(){
                                     {!showAlert && !doneStanding && (
                                         <button onClick={()=>stand()}>Stand</button>
                                     )}
-                                    {doneStanding && (
+                                    {(doneStanding || lost) && (
                                         <>
                                         <h2>Place your bet</h2>
                                         <input type="text" 
@@ -318,31 +356,29 @@ export default function BlackJack(){
                                 
                             </>
                         )}
+                        {showAlert && (
+                            <>
+                                <alert>You Lost!</alert>
+                            </>
+                            
+                        )}
+                        {win && (
+                            <>
+                                <alert>You won!</alert>
+                            </>
+                        )}
+                        {tie && (
+                            <>
+                                <alert>Tied!</alert>
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <>
+                    <button className="blackjackstart" onClick={()=>setStartGame(true)}>Start Game</button>
                     </>
                 )}
             </div>
-            {showAlert && (
-                <>
-                    <alert>You Lost!</alert>
-                </>
-                
-            )}
-
-            {win && (
-                <>
-                    <alert>You won!</alert>
-                </>
-            )}
-
-            {tie && (
-                <>
-                    <alert>Tied!</alert>
-                </>
-            )}
-
-            {!startGame && (
-                <button className="blackjackstart" onClick={()=>setStartGame(true)}>Start Game</button>
-            )}
         </>
     );
 }

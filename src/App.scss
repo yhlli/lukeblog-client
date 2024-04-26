@@ -571,3 +571,13 @@ a.location{
 img.card{
     max-width: 9rem;
 }
+
+button.blackjackstart{
+    margin: 40px 25%;
+    height: 15rem;
+    max-width: 30rem;
+}
+
+button.blackjackstart:hover{
+    background-color: #888;
+}

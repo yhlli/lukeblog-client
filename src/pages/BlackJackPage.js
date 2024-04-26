@@ -201,6 +201,7 @@ export default function BlackJack(){
         }
         let index = 2;
         while (tempScore < 17){
+            await sleep();
             const newCard = await deal();
             setDealerDeck((prevDeck) => [...prevDeck, newCard.cards[0]]);
             const cardValue = calculateCardValue(newCard.cards[0].value);
@@ -380,6 +381,12 @@ export default function BlackJack(){
         return cards;
     }
 
+    function sleep(time=1000){
+        return new Promise(res=>{
+            setTimeout(res,time)
+        })
+    }
+
     function placeBet(value){
         if (value <= money && value > 0){
             setMoney(money-value);
@@ -391,11 +398,8 @@ export default function BlackJack(){
     }
 
     async function placeOtherBet(value){
-        if (value>money) return;
-        if (money === 0){
-            alert('No money left');
-            setMoney(1500);
-        }
+        
+        if (value>money && money !== 0) return;
         setRoundCount(count => count + 1);
         if (roundCount%7===0){
             setIsShuffling(true);
@@ -438,6 +442,15 @@ export default function BlackJack(){
             playerStart();
             setIsBetting(false);
         }
+        if (money === 0){
+            alert('No money left');
+            setMoney(1500);
+            setBet(0);
+            start();
+            setIsBetting(true);
+            setStartGame(false);
+        }
+
     }
 
     return(

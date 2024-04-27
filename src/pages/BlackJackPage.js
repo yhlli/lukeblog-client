@@ -327,9 +327,9 @@ export default function BlackJack(){
 
     const playerStart = async ()=>{
         if (!deck) return;
-        //const cards = await deal(2);
+        const cards = await deal(2);
 
-        const cards = { //temporary test for splitting
+        /* const cards = { //temporary test for splitting
             "success": true, 
             "deck_id": "kxozasf3edqu", 
             "cards": [
@@ -355,7 +355,7 @@ export default function BlackJack(){
                 }
             ], 
             "remaining": 50
-        } //end test
+        } //end test */
 
         setMyDeck(cards.cards);
         var cardValue = 0;

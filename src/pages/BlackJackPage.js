@@ -178,12 +178,12 @@ export default function BlackJack(){
         setIsSplit(true);
         const card = myDeck[1];
         setSplitDeck((prevDeck)=> [...prevDeck, card]);
-        const value = parseInt(card.value);
+        const value = calculateCardValue(card.value);
         setSplitScore(value);
         const newArray = [...myDeck];
         newArray.splice(1,1);
         setMyDeck([...newArray]);
-        const card1value = parseInt(myDeck[0].value);
+        const card1value = calculateCardValue(myDeck[0].value);
         setPlayerScore(card1value);
         setMoney(money-bet);
         setBet(2*bet);
@@ -306,12 +306,20 @@ export default function BlackJack(){
 
     const dealerStart = async ()=>{
         if (!deck) return;
-        const cards = await deal(2);
-        setDealerDeck(cards.cards);
+        var cards = await deal(2);
+        
         var cardValue = 0;
         cards.cards.forEach(card => {
             cardValue = cardValue + calculateCardValue(card.value);
         });
+        while (cardValue === 21){
+            cards = await deal(2);
+            cardValue = 0;
+            cards.cards.forEach(card => {
+                cardValue = cardValue + calculateCardValue(card.value);
+            });
+        }
+        setDealerDeck(cards.cards);
         setDealerScore(cardValue);
         addDealerAces();
         checkDealerAces();
@@ -319,35 +327,35 @@ export default function BlackJack(){
 
     const playerStart = async ()=>{
         if (!deck) return;
-        const cards = await deal(2);
+        //const cards = await deal(2);
 
-        /* const cards = { //temporary test for splitting
+        const cards = { //temporary test for splitting
             "success": true, 
             "deck_id": "kxozasf3edqu", 
             "cards": [
                 {
-                    "code": "6H", 
-                    "image": "https://deckofcardsapi.com/static/img/6H.png", 
+                    "code": "KH", 
+                    "image": "https://deckofcardsapi.com/static/img/KH.png", 
                     "images": {
-                                  "svg": "https://deckofcardsapi.com/static/img/6H.svg", 
-                                  "png": "https://deckofcardsapi.com/static/img/6H.png"
+                                  "svg": "https://deckofcardsapi.com/static/img/KH.svg", 
+                                  "png": "https://deckofcardsapi.com/static/img/KH.png"
                               }, 
-                    "value": "6", 
+                    "value": "KING", 
                     "suit": "HEARTS"
                 }, 
                 {
-                    "code": "6S", 
-                    "image": "https://deckofcardsapi.com/static/img/6S.png", 
+                    "code": "KS", 
+                    "image": "https://deckofcardsapi.com/static/img/KS.png", 
                     "images": {
-                                  "svg": "https://deckofcardsapi.com/static/img/6S.svg", 
-                                  "png": "https://deckofcardsapi.com/static/img/6S.png"
+                                  "svg": "https://deckofcardsapi.com/static/img/KS.svg", 
+                                  "png": "https://deckofcardsapi.com/static/img/KS.png"
                               }, 
-                    "value": "6", 
+                    "value": "KING", 
                     "suit": "SPADES"
                 }
             ], 
             "remaining": 50
-        } //end test */
+        } //end test
 
         setMyDeck(cards.cards);
         var cardValue = 0;

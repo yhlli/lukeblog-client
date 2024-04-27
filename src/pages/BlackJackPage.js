@@ -466,10 +466,11 @@ export default function BlackJack(){
                             <h2>Place your bet</h2>
                             <input type="text" 
                                 placeholder="Bet amount"
+                                className="bettxt"
                                 value={bet}
                                 onChange={ev => setBet(parseInt(ev.target.value))}
                             />
-                            <button id="createbtn" style={{marginTop:'5px'}} onClick={()=>placeBet(bet)}>Place bet</button>
+                            <button className="betbtn" style={{marginTop:'5px'}} onClick={()=>placeBet(bet)}>Place bet</button>
                             </>
                         ) : (
                             <>
@@ -508,44 +509,46 @@ export default function BlackJack(){
                             </div>
                             <div>
                                 {!isStanding && !showAlert && (
-                                    <button onClick={()=>hit()} disabled={isStanding}>Hit</button>
+                                    <button className="actionbtn" onClick={()=>hit()} disabled={isStanding}>Hit</button>
                                 )}
                                 {!showAlert && !doneStanding && !isSplit && (
-                                    <button onClick={()=>stand()}>Stand</button>
+                                    <button className="actionbtn" onClick={()=>stand()}>Stand</button>
                                 )}
                                 {!showAlert && canSplit && !doneStanding && !isSplit && (
-                                    <button onClick={()=>split()}>Split</button>
+                                    <button className="actionbtn" onClick={()=>split()}>Split</button>
                                 )}
+                                <div>
+                                    {showAlert && (
+                                        <>
+                                            <alert>You lost!</alert>
+                                        </>
+                                    )}
+                                    {win && (
+                                        <>
+                                            <alert>You won!</alert>
+                                        </>
+                                    )}
+                                    {tie && (
+                                        <>
+                                            <alert>Tied!</alert>
+                                        </>
+                                    )}
+                                </div>
                                 {(doneStanding || lost) && !isSplit && (                                        <>
                                     <h2>Place your bet</h2>
                                     <input type="text" 
+                                        className="bettxt"
                                         placeholder="Bet amount"
                                         value={bet}
                                         onChange={ev => setBet(parseInt(ev.target.value))}
                                     />
-                                    <button id="createbtn" style={{marginTop:'5px'}} onClick={()=>placeOtherBet(bet)}>Place bet</button>
+                                    <button className="betbtn" style={{marginTop:'5px'}} onClick={()=>placeOtherBet(bet)}>Place bet</button>
                                     </>
                                 )}
                             </div>
                             </>
                         )}
-                        <div>
-                            {showAlert && (
-                                <>
-                                    <alert>You lost!</alert>
-                                </>
-                            )}
-                            {win && (
-                                <>
-                                    <alert>You won!</alert>
-                                </>
-                            )}
-                            {tie && (
-                                <>
-                                    <alert>Tied!</alert>
-                                </>
-                            )}
-                        </div>
+                        
                         
                         {isSplit && (
                             <>
@@ -557,41 +560,42 @@ export default function BlackJack(){
                             <div>
                                 {!isStanding && !showSplitAlert && (
                                     <>
-                                    <button onClick={()=>splitHit()} disabled={isStanding}>Hit</button>
+                                    <button className="actionbtn" onClick={()=>splitHit()} disabled={isStanding}>Hit</button>
                                     </>
                                 )}
                             </div>
-                            
+                            <div>
+                                {showSplitAlert && (
+                                    <>
+                                    <alert>You lost!</alert>
+                                    </>
+                                )}
+                                {splitWin && (
+                                    <>
+                                    <alert>You won!</alert>
+                                    </>
+                                )}
+                                {splitTie && (
+                                    <>
+                                    <alert>Tied!</alert>
+                                    </>
+                                )}
+                            </div>
                             {!(showAlert && showSplitAlert) && !doneStanding && (
-                                <button onClick={()=>stand()}>Stand</button>
+                                <button className="actionbtn" onClick={()=>stand()}>Stand</button>
                             )}
                             </>
                         )}
-                        <div>
-                            {showSplitAlert && (
-                                <>
-                                <alert>You lost!</alert>
-                                </>
-                            )}
-                            {splitWin && (
-                                <>
-                                <alert>You won!</alert>
-                                </>
-                            )}
-                            {splitTie && (
-                                <>
-                                <alert>Tied!</alert>
-                                </>
-                            )}
-                        </div>
+                        
                         {isSplit && (doneStanding || (lost && splitLost)) && (                                        <>
                             <h2>Place your bet</h2>
                                 <input type="text" 
                                     placeholder="Bet amount"
+                                    className="bettxt"
                                     value={bet}
                                     onChange={ev => setBet(parseInt(ev.target.value))}
                                 />
-                                <button id="createbtn" style={{marginTop:'5px'}} onClick={()=>placeOtherBet(bet)}>Place bet</button>
+                                <button className="betbtn" style={{marginTop:'5px'}} onClick={()=>placeOtherBet(bet)}>Place bet</button>
                                 </>
                         )}
                     </>

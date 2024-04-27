@@ -573,11 +573,51 @@ img.card{
 }
 
 button.blackjackstart{
-    margin: 40px 25%;
+    margin: 40px;
+    margin-left: auto;
+    margin-right: auto;
     height: 15rem;
     max-width: 30rem;
+    font-size: 2.5rem;
+    border-radius: 2rem;
 }
 
 button.blackjackstart:hover{
     background-color: #888;
+}
+
+button.betbtn{
+    max-width: 20rem;
+    min-height: 3.5rem;
+    border-radius: 2rem;
+    font-size: 2rem;
+}
+
+button.betbtn:hover{
+    background-color: #888;
+}
+
+input.bettxt{
+    min-height: 3rem;
+    max-width: 20rem;
+    border-radius: 2rem;
+    font-size: 1.5rem;
+}
+
+button.actionbtn{
+    margin-bottom: 1px;
+    min-height: 2.5rem;
+    max-width: 12rem;
+    border-radius: 1.5rem;
+    outline-style: auto;
+    outline: black;
+}
+
+button.actionbtn:hover{
+    background-color: #888;
+}
+
+alert{
+    color: white;
+    font-size: 1.5rem;
 }

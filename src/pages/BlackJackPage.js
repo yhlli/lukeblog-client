@@ -13,10 +13,8 @@ export default function BlackJack(){
     const [bet, setBet] = useState();
     const [isBetting, setIsBetting] = useState(true);
     const [isStanding, setIsStanding] = useState(false);
-    const [roundOver, setRoundOver] = useState(false);
     const [isSplit, setIsSplit] = useState(false);
     const [splitDeck, setSplitDeck] = useState([]);
-    const [isQuit, setIsQuit] = useState(false);
     const [lost, setLost] = useState(false);
     const [win, setWin] = useState(false);
     const [aceArray, setAceArray] = useState(Array(11).fill(0));
@@ -30,10 +28,11 @@ export default function BlackJack(){
     const [splitAceArray, setSplitAceArray] = useState(Array(11).fill(0));
     const [splitScore, setSplitScore] = useState(0);
     const [splitLost, setSplitLost] = useState(false);
-    const [splitRoundOver, setSplitRoundOver] = useState(false);
     const [showSplitAlert, setShowSplitAlert] = useState(false);
     const [splitWin, setSplitWin] = useState(false);
     const [splitTie, setSplitTie] = useState(false);
+    const [blackJack, setBlackJack] = useState(false);
+    const [splitBlackJack, setSplitBlackJack] = useState(false);
 
     useEffect(()=>{
         if (startGame){
@@ -56,16 +55,28 @@ export default function BlackJack(){
 
     useEffect(()=>{
         if (win && !isSplit){
-            setMoney(money + 2*bet);
+            if (blackJack){
+                setMoney(money + 2.5*bet);
+            } else{
+                setMoney(money + 2*bet);
+            }
         }
         if (win && isSplit){
-            setMoney(money + bet);
+            if (blackJack){
+                setMoney(money + bet*3/2);
+            }else{
+                setMoney(money + bet);
+            }
         }
     },[win]);
 
     useEffect(()=>{
         if (splitWin){
-            setMoney(money + bet);
+            if (splitBlackJack){
+                setMoney(money + bet*3/2);
+            }else{
+                setMoney(money + bet);
+            }
         }
     },[splitWin]);
 
@@ -102,7 +113,9 @@ export default function BlackJack(){
             } else if (playerScore > dealerScore){
                 setWin(true);
             }else if (dealerScore == playerScore) {
-                setTie(true);
+                if (!blackJack){
+                    setTie(true);
+                }
             }
         }
         if (doneStanding && isSplit){
@@ -127,10 +140,14 @@ export default function BlackJack(){
                 setSplitWin(true);
             }
             if (playerScore == dealerScore && playerScore < 22){
-                setTie(true);
+                if (!blackJack){
+                    setTie(true);
+                }
             }
             if (splitScore == dealerScore && splitScore < 22){
-                setSplitTie(true);
+                if (!splitBlackJack){
+                    setSplitTie(true);
+                }
             }
         }
     }, [doneStanding]);
@@ -227,7 +244,10 @@ export default function BlackJack(){
         addAces();
         if (playerScore > 21 && !checkAces()){
             setLost(true);
-            setRoundOver(true);
+        }
+        if (playerScore === 21){
+            setWin(true);
+            setBlackJack(true);
         }
     }
 
@@ -235,7 +255,10 @@ export default function BlackJack(){
         addSplitAces();
         if (splitScore > 21 && !checkSplitAces()){
             setSplitLost(true);
-            setSplitRoundOver(true);
+        }
+        if (splitScore === 21){
+            setSplitWin(true);
+            setSplitBlackJack(true);
         }
     }
 
@@ -368,6 +391,10 @@ export default function BlackJack(){
         setPlayerScore(cardValue);
         addAces();
         checkAces();
+        if (cardValue ===21){
+            setBlackJack(true);
+            setWin(true);
+        }
     }
 
     const calculateCardValue = (cardValue) => {
@@ -423,7 +450,6 @@ export default function BlackJack(){
         setPlayerScore(0);
         setIsStanding(false);
         setIsBetting(false);
-        setRoundOver(false);
         setLost(false);
         setWin(false);
         setAceArray(Array(11).fill(0));
@@ -438,10 +464,11 @@ export default function BlackJack(){
         setSplitAceArray(Array(11).fill(0));
         setSplitScore(0);
         setSplitLost(false);
-        setSplitRoundOver(false);
         setShowSplitAlert(false);
         setSplitWin(false);
         setSplitTie(false);
+        setBlackJack(false);
+        setSplitBlackJack(false);
 
         if (value <= money && value > 0){
             setMoney(money-value);
@@ -476,7 +503,14 @@ export default function BlackJack(){
                                 placeholder="Bet amount"
                                 className="bettxt"
                                 value={bet}
-                                onChange={ev => setBet(parseInt(ev.target.value))}
+                                onChange={ev => {
+                                    const newValue = ev.target.value;
+                                    if (newValue !== ""){
+                                        setBet(parseInt(newValue));
+                                    } else{
+                                        setBet(0);
+                                    }
+                                }}
                             />
                             <button className="betbtn" style={{marginTop:'5px'}} onClick={()=>placeBet(bet)}>Place bet</button>
                             </>
@@ -516,10 +550,10 @@ export default function BlackJack(){
                                 ))}
                             </div>
                             <div>
-                                {!isStanding && !showAlert && (
+                                {!isStanding && !showAlert && !win && (
                                     <button className="actionbtn" onClick={()=>hit()} disabled={isStanding}>Hit</button>
                                 )}
-                                {!showAlert && !doneStanding && !isSplit && (
+                                {!showAlert && !doneStanding && !isSplit && !win && (
                                     <button className="actionbtn" onClick={()=>stand()}>Stand</button>
                                 )}
                                 {!showAlert && canSplit && !doneStanding && !isSplit && (
@@ -536,19 +570,29 @@ export default function BlackJack(){
                                             <alert>You won!</alert>
                                         </>
                                     )}
+                                    {blackJack && (
+                                        <alert> Blackjack!</alert>
+                                    )}
                                     {tie && (
                                         <>
                                             <alert>Tied!</alert>
                                         </>
                                     )}
                                 </div>
-                                {(doneStanding || lost) && !isSplit && (                                        <>
+                                {(doneStanding || lost || win) && !isSplit && (                                        <>
                                     <h2>Place your bet</h2>
                                     <input type="text" 
                                         className="bettxt"
                                         placeholder="Bet amount"
                                         value={bet}
-                                        onChange={ev => setBet(parseInt(ev.target.value))}
+                                        onChange={ev => {
+                                            const newValue = ev.target.value;
+                                            if (newValue !== ""){
+                                                setBet(parseInt(newValue));
+                                            } else{
+                                                setBet(0);
+                                            }
+                                        }}
                                     />
                                     <button className="betbtn" style={{marginTop:'5px'}} onClick={()=>placeOtherBet(bet)}>Place bet</button>
                                     </>
@@ -583,6 +627,9 @@ export default function BlackJack(){
                                     <alert>You won!</alert>
                                     </>
                                 )}
+                                {splitBlackJack && (
+                                    <alert> Blackjack!</alert>
+                                )}
                                 {splitTie && (
                                     <>
                                     <alert>Tied!</alert>
@@ -601,7 +648,14 @@ export default function BlackJack(){
                                     placeholder="Bet amount"
                                     className="bettxt"
                                     value={bet}
-                                    onChange={ev => setBet(parseInt(ev.target.value))}
+                                    onChange={ev => {
+                                        const newValue = ev.target.value;
+                                        if (newValue !== ""){
+                                            setBet(parseInt(newValue));
+                                        } else{
+                                            setBet(0);
+                                        }
+                                    }}
                                 />
                                 <button className="betbtn" style={{marginTop:'5px'}} onClick={()=>placeOtherBet(bet)}>Place bet</button>
                                 </>

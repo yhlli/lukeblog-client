@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { address } from "../Header";
+import { UserContext } from "../UserContext";
 
 export default function BlackJack(){
     const [startGame, setStartGame] = useState(false);
@@ -33,6 +35,30 @@ export default function BlackJack(){
     const [splitTie, setSplitTie] = useState(false);
     const [blackJack, setBlackJack] = useState(false);
     const [splitBlackJack, setSplitBlackJack] = useState(false);
+    const [highscore, setHighscore] = useState(0);
+    const {userInfo} = useContext(UserContext);
+
+    useEffect(()=>{
+        if (userInfo !== null){
+            fetch(`${address}/user/${userInfo.username}/highscore`, {
+                credentials: "include"
+            })
+            .then(response=>{
+                response.json().then(highscore=>{
+                    setHighscore(highscore);
+                })
+            })
+        }
+    },[money]);
+
+    useEffect(()=>{
+        if (userInfo !== null && money > highscore){
+            fetch(`${address}/user/${userInfo.username}/highscore?money=${money}`, {
+                credentials: "include",
+                method: 'POST',
+            });
+        }
+    },[placeOtherBet]);
 
     useEffect(()=>{
         if (startGame){
@@ -433,7 +459,6 @@ export default function BlackJack(){
     }
 
     async function placeOtherBet(value){
-        
         if (value>money && money !== 0) return;
         setRoundCount(count => count + 1);
         if (roundCount%7===0){
@@ -493,6 +518,9 @@ export default function BlackJack(){
             <div>
                 {startGame ? (
                     <>
+                        {userInfo !== null && (
+                            <h5>Highscore: {highscore}</h5>
+                        )}
                         <h1>Your balance: {money}</h1>
                         <h2>Your bet: {bet}</h2>
                         <img className="card" src="https://deckofcardsapi.com/static/img/back.png" alt="" />

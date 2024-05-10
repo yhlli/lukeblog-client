@@ -272,8 +272,8 @@ export default function BlackJack(){
             setLost(true);
         }
         if (playerScore === 21){
-            setWin(true);
             setBlackJack(true);
+            setWin(true);
         }
     }
 
@@ -283,8 +283,8 @@ export default function BlackJack(){
             setSplitLost(true);
         }
         if (splitScore === 21){
-            setSplitWin(true);
             setSplitBlackJack(true);
+            setSplitWin(true);
         }
     }
 
@@ -313,6 +313,7 @@ export default function BlackJack(){
         }
         return false;
     }
+
     const checkDealerAces = ()=>{
             for (let i=0; i<dealerDeck.length; i++){
                 if (dealerAceArray[i]===1){

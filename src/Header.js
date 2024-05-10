@@ -61,17 +61,17 @@ export default function Header(){
               <li><Link to="/blackjack">Blackjack</Link></li>
             </ul>
           </li>
+          {userInfo === null && (
+            <>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/register">Register</Link></li>
+            </>
+          )}
           {userInfo !== null && (
             <>
               <li><Link to="/create">Create Post</Link></li>
               <li><Link to={`/user/${userInfo.username}`}>My Profile</Link></li>
               <li><Link onClick={logout}>Logout</Link></li>
-            </>
-          )}
-          {userInfo === null && (
-            <>
-              <li><Link to="/login">Login</Link></li>
-              <li><Link to="/register">Register</Link></li>
             </>
           )}   
         </ul>

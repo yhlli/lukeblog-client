@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { address } from "../Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import Post from "../Post";
 import Loading from "../Loading";
 
 export default function UserPage(){
-    const {userInfo} = useContext(UserContext);
+    const {setUserInfo,userInfo} = useContext(UserContext);
     const [aboutMe, setaboutMe] = useState(null);
     const [posts, setPosts] = useState('');
     const {id} = useParams();
@@ -15,6 +15,7 @@ export default function UserPage(){
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [isOn, setIsOn] = useState(false);
+    const [redirect,setRedirect] = useState(false);
 
     //1:date desc, 2:date asc, 3:views desc, 4:views asc
     const [sortBy, setsortBy] = useState(1);
@@ -71,6 +72,27 @@ export default function UserPage(){
         )
     }
 
+    async function deleteProfile(){
+        const confirmDelete = window.confirm('Are you sure you want to delete your profile? Your posts and comments will also be deleted.');
+        if (confirmDelete){
+            const response = await fetch(`${address}/user/${id}/delete`, {method: 'DELETE', credentials: 'include'});
+            if (response.ok){
+                logout();
+                setRedirect(true);
+            }
+        }
+    }
+    if (redirect){
+        return <Navigate to={'/'} />
+    }
+    async function logout(){
+        await fetch(address+'/logout', {
+          credentials: 'include',
+          method: 'POST',
+        });
+        setUserInfo(null);
+    }
+
     return (
         <>
             {isLoading ? <Loading /> : (
@@ -99,6 +121,9 @@ export default function UserPage(){
                         )}
                         { userInfo !== null && userInfo.username === id && (
                             <Link className="edit-btn" to={`/user/editbio/${id}`}>Edit Profile</Link>
+                        )}
+                        { userInfo !== null && userInfo.username === id && (
+                            <Link className="delete-btn" onClick={()=>deleteProfile()}>Delete Profile</Link>
                         )}
                     </div>
                     <br></br>

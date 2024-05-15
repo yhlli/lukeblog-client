@@ -25,7 +25,6 @@ export default function BlackJack(){
     const [doneStanding, setDoneStanding] = useState(false);
     const [tie, setTie] = useState(false);
     const [roundCount, setRoundCount] = useState(0);
-    const [isShuffling, setIsShuffling] = useState(false);
     const [canSplit, setCanSplit] = useState(false);
     const [splitAceArray, setSplitAceArray] = useState(Array(11).fill(0));
     const [splitScore, setSplitScore] = useState(0);
@@ -463,10 +462,8 @@ export default function BlackJack(){
         if (value>money && money !== 0) return;
         setRoundCount(count => count + 1);
         if (roundCount%7===0){
-            setIsShuffling(true);
             await fetch(`https://www.deckofcardsapi.com/api/deck/${deck.deck_id}/return/`);
             await fetch(`https://www.deckofcardsapi.com/api/deck/${deck.deck_id}/shuffle/`);
-            setIsShuffling(false);
         }
         //reset all variables for next round, except for money and deck, etc
         setMyDeck([]);

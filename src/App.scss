@@ -629,3 +629,18 @@ a.location:hover{
 textarea{
     min-width: 100%;
 }
+
+div.profile a.delete-btn{
+    background-color: #b34242;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+div.profile a.delete-btn:hover{
+    background-color: rgb(255, 137, 137);
+}

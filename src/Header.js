@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 
 //http://localhost:4000
 //https://lukeblog-api.onrender.com
-export const address = 'https://lukeblog-api.onrender.com'
+export const address = 'http://localhost:4000'
 
 export default function Header(){
   const {setUserInfo,userInfo} = useContext(UserContext);

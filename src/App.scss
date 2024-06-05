@@ -32,7 +32,18 @@ main{
     padding: 10px;
     max-width: 80%;
     //margin: 0 auto;
-    margin-left: 20%;
+    margin-left: 200px;
+}
+
+aside.sidebar{
+    position: fixed;
+    margin: 0;
+    margin-top: 50px;
+    max-width: 200px;
+    background-color: var(--background-color);
+}
+aside.sidebar img{
+    max-width: 200px;
 }
 
 header{
@@ -432,6 +443,10 @@ div.profile{
     display: block;
     justify-content: space-between;
     text-align: center;
+}
+
+div.bio{
+    padding: 4px;
 }
 
 div.bio p{

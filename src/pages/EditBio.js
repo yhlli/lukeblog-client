@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Editor from "../Editor";
 import { Navigate, useParams } from "react-router-dom";
 import { address } from "../Header";
 
@@ -30,7 +29,10 @@ export default function EditBio(){
 
     return(
         <form onSubmit={addBio}>
-            <Editor value={content} onChange={setContent} />
+            <input type="text" 
+                placeholder="Bio..."
+                value={content}
+                onChange={ev=>{setContent(ev.target.value)}} />
             <button id="createbtn" style={{marginTop:'5px'}}>Edit Bio</button>
         </form>
     );

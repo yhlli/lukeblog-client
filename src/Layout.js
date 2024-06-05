@@ -4,12 +4,15 @@ import Sidebar from "./Sidebar";
 
 export default function Layout(){
     return(
-        <main>
-            <div className="layout-container">
-                <Sidebar />
-                <Header />
-                <Outlet />
-            </div>
-        </main>
+        <>
+            <Sidebar />
+            <main>
+                <div className="layout-container">
+                    <Header />
+                    <Outlet />
+                </div>
+            </main>
+        </>
+        
     );
 }

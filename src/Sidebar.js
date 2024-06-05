@@ -8,13 +8,14 @@ function Sidebar() { // Optionally accept a position prop
     return (
       <>
         <aside className='sidebar'>
-          <AdSense.Google
+          <img src={"/Capture.png"} alt="Advertisement" />
+          {/* <AdSense.Google
             client="ca-pub-7518228825778101" // Replace with your AdSense publisher ID
             slot={adUnit}
             format="auto"
             responsive="true"
             layout="in-article"
-          />
+          /> */}
         </aside>
       </>
       

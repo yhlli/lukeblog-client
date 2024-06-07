@@ -51,7 +51,7 @@ export default function BlackJack(){
     },[money]);
 
     useEffect(()=>{
-        if (userInfo !== null && money > highscore){
+        if (userInfo !== null && money > highscore && highscore !== 0){
             fetch(`${address}/user/${userInfo.username}/highscore?money=${money}`, {
                 credentials: "include",
                 method: 'POST',

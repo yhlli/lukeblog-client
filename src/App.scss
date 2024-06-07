@@ -32,18 +32,18 @@ main{
     padding: 10px;
     max-width: 80%;
     //margin: 0 auto;
-    margin-left: 200px;
+    margin-left: 20%;
 }
 
 aside.sidebar{
     position: fixed;
     margin: 0;
-    margin-top: 50px;
-    max-width: 200px;
+    margin-top: 100px;
+    max-width: 20%;
     background-color: var(--background-color);
 }
 aside.sidebar img{
-    max-width: 200px;
+    max-width: 100%;
 }
 
 header{

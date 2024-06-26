@@ -15,6 +15,7 @@ import UserPage from './pages/UserPage';
 import EditBio from './pages/EditBio';
 import WeatherPage from './pages/WeatherPage';
 import BlackJack from './pages/BlackJackPage';
+import GroceryPage from './pages/GroceryPage';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path='/user/editbio/:id' element={<EditBio />} />
           <Route path={'/weather'} element={<WeatherPage />} />
           <Route path={'/blackjack'} element={<BlackJack />} />
+          <Route path={'/:id/grocery'} element={<GroceryPage />} />
         </Route>
       </Routes>
     </UserContextProvider>

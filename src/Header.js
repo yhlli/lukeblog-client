@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
 //http://localhost:4000
 //https://lukeblog-api.onrender.com
-export const address = 'https://lukeblog-api.onrender.com'
+export const address = 'https://lukeblog-api.onrender.coms'
 
 export default function Header(){
   const {setUserInfo,userInfo} = useContext(UserContext);
@@ -12,6 +12,9 @@ export default function Header(){
   const [region, setRegion] = useState('');
   const [country, setCountry] = useState('');
   const [vIp, setVIp] = useState('');
+  
+  const navigate = useNavigate();
+
   useEffect(()=>{
     const fetchData = async () => await fetch(address+'/profile', {
       credentials: 'include',
@@ -38,13 +41,21 @@ export default function Header(){
     fetchip();
   }, []);
 
-  async function logout(){
-    fetch(address+'/logout', {
-      credentials: 'include',
-      method: 'POST',
-    });
-    setUserInfo(null);
+  const logout = async () => {
+    try {
+      const response = await fetch(address+'/logout', {
+        credentials: 'include',
+        method: 'POST',
+      });
+      if (response.ok){
+        setUserInfo(null);
+        navigate('/');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
 
   return(
     <header>
@@ -59,21 +70,21 @@ export default function Header(){
               <li><Link to="/resume">My Resume</Link></li>
               <li><Link to="/contact">Contact</Link></li>
               <li><Link to="/blackjack">Blackjack</Link></li>
+              {userInfo !== null && <li><Link to={`${userInfo.username}/grocery`}>Grocery List</Link></li>}
             </ul>
           </li>
-          {userInfo === null && (
+          {userInfo === null ? (
             <>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>
             </>
-          )}
-          {userInfo !== null && (
+          ) : (
             <>
               <li><Link to="/create">Create Post</Link></li>
               <li><Link to={`/user/${userInfo.username}`}>My Profile</Link></li>
-              <li><Link onClick={logout}>Logout</Link></li>
+              <li><Link onClick={() => logout()}>Logout</Link></li>
             </>
-          )}   
+          )}  
         </ul>
       </nav>
     </header>

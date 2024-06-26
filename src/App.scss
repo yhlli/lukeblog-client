@@ -32,14 +32,14 @@ main{
     padding: 10px;
     max-width: 80%;
     //margin: 0 auto;
-    margin-left: 20%;
+    margin-left: 15%;
 }
 
 aside.sidebar{
     position: fixed;
     margin: 0;
     margin-top: 100px;
-    max-width: 20%;
+    max-width: 15%;
     background-color: var(--background-color);
 }
 aside.sidebar img{
@@ -96,8 +96,9 @@ header a.logo:hover{
 
 /*Fade in animation for dropdown*/
 
-@for $i from 1 through 5 {
-    #menu li:nth-of-type(1):hover li:nth-of-type(#{$i}){
+
+@for $i from 1 through 6 {
+    #menu li:hover li:nth-child(#{$i}){
         animation: fadeIn ($i/2)+0.5s;
     }
 }
@@ -146,11 +147,11 @@ header a.logo:hover{
     border-radius: 0px;
 }
 
-#menu ul li:nth-of-type(1){
+#menu ul li:first-of-type{
     border-top-right-radius: var(--border-radius);
 }
 
-#menu ul li:nth-of-type(5){
+#menu ul li:last-of-type{
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
 }

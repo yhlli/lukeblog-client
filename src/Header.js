@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 
 //http://localhost:4000
 //https://lukeblog-api.onrender.com
-export const address = 'https://lukeblog-api.onrender.coms'
+export const address = 'https://lukeblog-api.onrender.com'
 
 export default function Header(){
   const {setUserInfo,userInfo} = useContext(UserContext);
@@ -73,7 +73,7 @@ export default function Header(){
               {userInfo !== null && <li><Link to={`${userInfo.username}/grocery`}>Grocery List</Link></li>}
             </ul>
           </li>
-          {userInfo === null ? (
+          {(userInfo === null || userInfo === undefined) ? (
             <>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>

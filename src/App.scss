@@ -96,28 +96,11 @@ header a.logo:hover{
 
 /*Fade in animation for dropdown*/
 
-
 @for $i from 1 through 6 {
     #menu li:hover li:nth-child(#{$i}){
         animation: fadeIn ($i/2)+0.5s;
     }
 }
-
-/* #menu li:nth-of-type(1):hover li:nth-of-type(1){
-    animation: fadeIn 1s;
-}
-
-#menu li:nth-of-type(1):hover li:nth-of-type(2){
-    animation: fadeIn 2s;
-}
-
-#menu li:nth-of-type(1):hover li:nth-of-type(3){
-    animation: fadeIn 3s;
-}
-
-#menu li:nth-of-type(1):hover li:nth-of-type(4){
-    animation: fadeIn 4s;
-} */
 
 @keyframes fadeIn {
     0% { opacity: 0; }
@@ -159,7 +142,6 @@ header a.logo:hover{
 #menu ul li a{
     display: block;
     text-decoration: none;
-
 }
 
 #menu li:hover ul {
@@ -223,6 +205,7 @@ h4, p{
         margin-left: 1.5rem;
 }
 
+/* Reformatting for mobile view or when the page is narrowed */
 @media (max-width: 768px){
     #menu{
         margin-right: 1rem;
@@ -247,7 +230,6 @@ h4, p{
         margin-right: 0px;
     }
 
-    
     main{
         max-width: 100%;
     }
@@ -323,7 +305,6 @@ button:hover .ql-fill {
 }
 
 div.post-page div.image{
-    //max-height: 300px;
     max-width: 80vw;
     display: flex;
     overflow: visible;

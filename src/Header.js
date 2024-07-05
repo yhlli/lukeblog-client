@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
-//http://localhost:4000
-//https://lukeblog-api.onrender.com
+//export const address = 'http://localhost:4000'
 export const address = 'https://lukeblog-api.onrender.com'
 
 export default function Header(){
@@ -55,7 +54,6 @@ export default function Header(){
       console.log(error);
     }
   }
-
 
   return(
     <header>

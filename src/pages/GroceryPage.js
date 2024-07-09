@@ -106,6 +106,7 @@ export default function GroceryPage(){
     const decrementGrocery = async (ev,quantity,id)=>{
         if (quantity== 1){
             removeGrocery(id);
+            return;
         }
         const num = -1;
         const response = await fetch(`${address}/${userInfo.id}/grocerylistquantity?num=${num}&name=${ev}`, {

@@ -138,6 +138,7 @@ export default function GroceryPage(){
                     onDragEnter={()=>(draggedItem.current = index)}
                     onDragEnd={handleSort}
                     onDragOver={(e)=>e.preventDefault()}
+                    style={{ touchAction: 'none' }}
                 >
                     <Grocery {...grocery} key={grocery._id}
                         removeGrocery={removeGrocery}

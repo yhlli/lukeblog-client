@@ -657,3 +657,75 @@ div.profile a.delete-btn{
 div.profile a.delete-btn:hover{
     background-color: rgb(255, 137, 137);
 }
+
+.groceryForm{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.input-container{
+    display: flex;
+    width: 100%;
+    gap: 5px;
+}
+
+.groceryText{
+    flex: 1;
+    
+}
+.groceryQuantity{
+    width: 50px
+}
+
+.grocery {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 2px solid #333;
+    border-radius: 15px;
+    background-color: #4576a5;
+}
+
+.grocery p{
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.gbuttons{
+    display: flex;
+    gap: 5px;
+}
+
+.quant{
+    font-size: 24px;
+    padding: 10px;
+    line-height: 10px;
+    text-align: center;
+}
+
+.plusminus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.groceryDelete{
+    max-width: 60px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #b34242;
+}
+
+.quant:hover{
+    background-color: #888;
+}
+
+.groceryDelete:hover{
+    background-color: red;
+}

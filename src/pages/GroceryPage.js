@@ -3,13 +3,13 @@ import { UserContext } from "../UserContext";
 import { address } from "../Header";
 import Grocery from "../Grocery";
 
+import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
+
 export default function GroceryPage(){
     const {userInfo} = useContext(UserContext);
     const [groceryList, setGroceryList] = useState([]);
     const [groceryItem, setGroceryItem] = useState('');
     const [groceryQuantity, setGroceryQuantity] = useState(1);
-    const dragItem = useRef(0);
-    const draggedItem = useRef(0);
 
     useEffect(()=>{
         fetch(`${address}/${userInfo.id}/grocerylist`, {
@@ -67,21 +67,6 @@ export default function GroceryPage(){
         }
     }
 
-    const handleSort = async()=>{
-        if (dragItem.current !== draggedItem.current){
-            const groceryCopy = [...groceryList];
-            const [temp] = groceryCopy.splice(dragItem.current, 1);
-            groceryCopy.splice(draggedItem.current, 0, temp);
-            setGroceryList(groceryCopy);
-            await fetch(`${address}/${userInfo.id}/grocerylist`, {
-                method: 'PUT',
-                body: JSON.stringify(groceryCopy),
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include',
-            })
-        }
-    }
-
     const incrementGrocery = async (ev)=>{
         const num = 1;
         const response = await fetch(`${address}/${userInfo.id}/grocerylistquantity?num=${num}&name=${ev}`, {
@@ -127,44 +112,76 @@ export default function GroceryPage(){
         }
     }
 
+    const handleDragDrop = async (results)=>{
+        const {source, destination, type} = results;
+        if (!destination) return;
+        if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+        if (type === 'group') {
+            const groceryCopy = [...groceryList];
+            const sIndex = source.index;
+            const dIndex = destination.index;
+            const [temp] = groceryCopy.splice(sIndex, 1);
+            groceryCopy.splice(dIndex, 0, temp)
+            setGroceryList(groceryCopy);
+            await fetch(`${address}/${userInfo.id}/grocerylist`, {
+                method: 'PUT',
+                body: JSON.stringify(groceryCopy),
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+            })
+        }
+    }
+
     return (
         <>
         {userInfo !== null && (
             <>
-            {groceryList.length > 0 && groceryList.map((grocery,index) => (
-                <div
-                    draggable
-                    onDragStart={()=>(dragItem.current = index)}
-                    onDragEnter={()=>(draggedItem.current = index)}
-                    onDragEnd={handleSort}
-                    onDragOver={(e)=>e.preventDefault()}
-                    style={{ touchAction: 'none' }}
-                >
-                    <Grocery {...grocery} key={grocery._id}
-                        removeGrocery={removeGrocery}
-                        increment={incrementGrocery}
-                        decrement={decrementGrocery} />
-                </div>
-            ))}
-            
+            <div>
+                <h1>Grocery List</h1>
+            </div>
             <form className="groceryForm" onSubmit={addGrocery}>
-                <input className="groceryText"
-                    type="text"
-                    placeholder="Grocery"
-                    value={groceryItem}
-                    required
-                    onChange={ev=>setGroceryItem(ev.target.value)} />
-                <input className="groceryQuantity"
-                    type="number"
-                    value={groceryQuantity}
-                    onChange={ev=>setGroceryQuantity(ev.target.value)}
-                    min={1}
-                    max={100}
-                    required
+                <div className="input-container">
+                    <input className="groceryText"
+                        type="text"
+                        placeholder="Grocery"
+                        value={groceryItem}
+                        required
+                        onChange={ev => setGroceryItem(ev.target.value)} />
+                    <input className="groceryQuantity"
+                        type="number"
+                        value={groceryQuantity}
+                        onChange={ev => setGroceryQuantity(ev.target.value)}
+                        min={1}
+                        max={100}
+                        required
                     />
+                </div>
                 <button id="grocerySubmit" style={{ marginTop: '5px' }}>Add Item</button>
             </form>
-
+            <DragDropContext
+                onDragEnd={handleDragDrop}
+            >
+                <Droppable droppableId="ROOT" type="group">
+                    {(provided)=>(
+                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                            {groceryList.length > 0 && groceryList.map((grocery, index) => (
+                                <Draggable draggableId={grocery._id} key={grocery._id} index={index}>
+                                    {(provided)=>(
+                                        <div {...provided.dragHandleProps} {...provided.draggableProps} ref={provided.innerRef}>
+                                            <Grocery {...grocery} key={grocery._id}
+                                                removeGrocery={removeGrocery}
+                                                increment={incrementGrocery}
+                                                decrement={decrementGrocery} />
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+            
             </>
         )}
         </>

@@ -4,7 +4,7 @@ import { UserContext } from "../UserContext";
 
 export default function BlackJack(){
     const [startGame, setStartGame] = useState(false);
-    const [money, setMoney] = useState(1500);
+    const [money, setMoney] = useState(-1);
     const [deck, setDeck] = useState('');
     const [dealerDeck, setDealerDeck] = useState([]);
     const [myDeck, setMyDeck] = useState([]);
@@ -38,6 +38,15 @@ export default function BlackJack(){
     const {userInfo} = useContext(UserContext);
 
     useEffect(()=>{
+        fetch(`${address}/user/${userInfo.username}/money`, {
+            credentials: 'include',
+            method: 'GET',
+        }).then(response=>response.json().then(
+            cash=>setMoney(cash)
+        ))
+    },[])
+
+    useEffect(()=>{
         if (userInfo !== null){
             fetch(`${address}/user/${userInfo.username}/highscore`, {
                 credentials: "include"
@@ -60,9 +69,18 @@ export default function BlackJack(){
     },[placeOtherBet]);
 
     useEffect(()=>{
-        if (startGame){
-            start();
+        const begin = async ()=>{
+            if (startGame){
+                const response = await fetch(`${address}/user/${userInfo.username}/money`, {
+                    credentials: 'include',
+                    method: 'GET',
+                })
+                const data = await response.json();
+                setMoney(data);
+                start();
+            }
         }
+        begin();
     },[startGame,fetchedDeck]);
 
     //hook to check if player busted
@@ -79,39 +97,74 @@ export default function BlackJack(){
     },[splitDeck]);
 
     useEffect(()=>{
-        if (win && !isSplit){
-            if (blackJack){
-                setMoney(money + 2.5*bet);
-            } else{
-                setMoney(money + 2*bet);
+        const updateBalance = async ()=>{
+            var tmoney = money;
+            if (win && !isSplit){
+                if (blackJack){
+                    tmoney = money + 2.5*bet;
+                    setMoney(money + 2.5*bet);
+                } else{
+                    tmoney = money + 2*bet;
+                    setMoney(money + 2*bet);
+                }
+            }
+            if (win && isSplit){
+                if (blackJack){
+                    tmoney = money + bet*3/2;
+                    setMoney(money + bet*3/2);
+                }else{
+                    tmoney = money + bet;
+                    setMoney(money + bet);
+                }
+            }
+            try {
+                await updateMoney(tmoney);
+            } catch (error) {
+                console.error('Error updating money', error);
             }
         }
-        if (win && isSplit){
-            if (blackJack){
-                setMoney(money + bet*3/2);
-            }else{
-                setMoney(money + bet);
-            }
-        }
+        updateBalance();
     },[win]);
 
     useEffect(()=>{
-        if (splitWin){
-            if (splitBlackJack){
-                setMoney(money + bet*3/2);
-            }else{
-                setMoney(money + bet);
+        const updateBalance = async ()=>{
+            var tmoney = money;
+            if (splitWin){
+                if (splitBlackJack){
+                    tmoney = money + bet*3/2;
+                    setMoney(money + bet*3/2);
+                }else{
+                    tmoney = money + bet;
+                    setMoney(money + bet);
+                }
+            }
+            try {
+                await updateMoney(tmoney);
+            } catch (error) {
+                console.error('Error updating money', error);
             }
         }
+        updateBalance();
     },[splitWin]);
 
     useEffect(()=>{
-        if (tie && !isSplit){
-            setMoney(money + bet);
+        const updateBalance = async ()=>{
+            var tmoney = money;
+            if (tie && !isSplit){
+                tmoney = money + bet;
+                setMoney(money + bet);
+            }
+            if (tie && isSplit){
+                tmoney = money + bet/2;
+                setMoney(money + bet/2);
+            }
+            try {
+                await updateMoney(tmoney);
+            } catch (error) {
+                console.error('Error updating money', error);
+            }
         }
-        if (tie && isSplit){
-            setMoney(money + bet/2);
-        }
+        updateBalance();
     },[tie]);
 
     //hook to handle loss, allows card to render after losing
@@ -177,6 +230,16 @@ export default function BlackJack(){
         }
     }, [doneStanding]);
 
+    const updateMoney = async (tmoney)=>{
+        const num = tmoney;
+        if (num !== -1){
+            await fetch(`${address}/user/${userInfo.username}/money?money=${num}`, {
+                credentials: "include",
+                method: "POST",
+            });
+        }
+    }
+
     const start = async ()=>{
         const response = await fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6`);
         const deckresponse = await response.json();
@@ -214,7 +277,7 @@ export default function BlackJack(){
         }
     }
 
-    const split = ()=>{
+    const split = async()=>{
         if (!deck) return;
         if (bet>money) return;
         setIsSplit(true);
@@ -227,7 +290,9 @@ export default function BlackJack(){
         setMyDeck([...newArray]);
         const card1value = calculateCardValue(myDeck[0].value);
         setPlayerScore(card1value);
+        var tmoney = money - bet;
         setMoney(money-bet);
+        updateMoney(tmoney);
         setBet(2*bet);
     }
 
@@ -448,13 +513,32 @@ export default function BlackJack(){
         })
     }
 
-    function placeBet(value){
-        if (value <= money && value > 0){
+    async function placeBet(value){
+        const response = await fetch(`${address}/user/${userInfo.username}/money`, {
+            credentials: 'include',
+            method: 'GET',
+        })
+        var tmoney = await response.json();
+        if (money <= 0) {
+            alert('No money left');
+            tmoney = 1500;
+            setMoney(1500);
+            setBet(0);
+            start();
+            setIsBetting(true);
+            setStartGame(false);
+        } else if (value <= money && value > 0){
             setMoney(money-value);
+            tmoney = money-value;
             setBet(value);
             dealerStart();
             playerStart();
             setIsBetting(false);
+        }
+        try {
+            await updateMoney(tmoney);
+        } catch (error) {
+            console.error('Error updating money', error);
         }
     }
 
@@ -493,7 +577,9 @@ export default function BlackJack(){
         setBlackJack(false);
         setSplitBlackJack(false);
 
+        var tmoney = money;
         if (value <= money && value > 0){
+            tmoney = money-value;
             setMoney(money-value);
             setBet(value);
             dealerStart();
@@ -502,13 +588,18 @@ export default function BlackJack(){
         }
         if (money === 0){
             alert('No money left');
+            tmoney = 1500;
             setMoney(1500);
             setBet(0);
             start();
             setIsBetting(true);
             setStartGame(false);
         }
-
+        try {
+            await updateMoney(tmoney);
+        } catch (error) {
+            console.error('Error updating money', error);
+        }
     }
 
     return(

@@ -1,6 +1,6 @@
 
 
-export default function Grocery({name, quantity, _id, removeGrocery, increment, decrement}){
+export default function Grocery({name, quantity, checked, _id, removeGrocery, increment, decrement}){
 
     return(
     <>
